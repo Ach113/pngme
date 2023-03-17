@@ -25,12 +25,13 @@ $ cargo run -- dice.png -l
     chunk type: IDAT, 22719 bytes
     chunk type: IEND, 12 bytes
 ```
-These are the default contents of a .png file, header `IHDR`, tail `IEND` and `IDAT` 
-chunks that contains the actual data of png. Contents of a chunk, other than the initial `IEND`,
-will not be displayed when viewing the contents of the file, allowing us to store "secret" messages
-in .png files.
+These are the default contents of a .png file: header `IHDR`, tail `IEND`, and `IDAT`.
+`IDAT` chunk contains the actual data of a .png file. When viewing the contents of the file,
+only contents of `IDAT` will be displayed. Contents of any other chunk are virtually 
+invisible to the viewer. This allows us to encode "secret" messages inside .png files
+by inserting new chunks of data into the file.
 
-It's recommended to refrain from naming the chunks `IHDR`, `IEND` or `IDAT`.
+(It's recommended to refrain from naming new chunks `IHDR`, `IEND` or `IDAT`)
 ```
 $ cargo run -- dice.png SCRT -e "birds aren't real"
 $ cargo run -- dice.png -l
@@ -40,7 +41,7 @@ $ cargo run -- dice.png -l
     chunk type: SCRT, 29 bytes
 ```
 We can retrieve the message by specifying the chunk name. 
-(note, program will crash if contents of IHDR, IDAT and IEND are read)
+(note, program will crash if contents of `IHDR`, `IDAT` and `IEND` are read)
 ```
 $ cargo run -- dice.png SCRT
     birds aren't real
